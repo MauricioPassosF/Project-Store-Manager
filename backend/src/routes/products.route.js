@@ -1,9 +1,6 @@
 const route = require('express').Router();
-const { productsModel } = require('../models');
+const { productsControllers } = require('../controllers');
 
-route.get('/', async (_req, res) => {
-  productsModel.findAll();
-  res.status(200).json({ message: 'test' });
-});
+route.get('/', productsControllers.getAll);
 
 module.exports = route;
