@@ -6,6 +6,8 @@ const connection = require('./connection');
 //   return arrayCamelized;
 // };
 
+const createNewData = (id, name) => ({ id, name });
+
 const getAll = async () => {
   const [products] = await connection.execute(
     'SELECT * FROM products ORDER BY id ASC;',
@@ -18,7 +20,15 @@ const getbyId = async (reqId) => {
   return product;
 };
 
+const insert = async (reqName) => {
+  const [{ insertId }] = await connection
+  .execute('INSERT INTO products (name) value (?);', [reqName]);
+  // console.log(insertId);
+  return createNewData(insertId, reqName);
+};
+
 module.exports = {
   getAll,
   getbyId,
+  insert,
 };

@@ -13,7 +13,14 @@ const getbyId = async (reqId) => {
   return { status: 'SUCCESSFULL', data }; 
 };
 
+const insert = async (reqName) => {
+  const data = await productsModel.insert(reqName);
+  // console.log(`Log Service: ${data}`);
+  return { status: 'CREATED', data }; 
+};
+
 module.exports = {
   getAll,
   getbyId,
+  insert,
 };

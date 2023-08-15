@@ -12,7 +12,14 @@ const getbyId = async (req, res) => {
   return res.status(mapStatusHTTP(status)).json(data || message);
 };
 
+const insert = async (req, res) => {
+  const { name } = req.body;
+  const { data, status } = await productsServices.insert(name);
+  return res.status(mapStatusHTTP(status)).json(data);
+};
+
 module.exports = {
   getAll,
   getbyId,
+  insert,
 };
