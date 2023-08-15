@@ -17,8 +17,11 @@ const mockAllProductsModel = [[
   { id: 3, name: 'Meias' },
 ]];
 
+const mockProductModel = [[{ id: 1, name: 'Raquete de tenis' }]];
+
 module.exports = {
   mockAllProductsController,
   mockAllProductsService,
   mockAllProductsModel,
+  mockProductModel,
 };

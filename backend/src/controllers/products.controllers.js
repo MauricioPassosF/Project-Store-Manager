@@ -6,6 +6,13 @@ const getAll = async (_req, res) => {
   return res.status(mapStatusHTTP(status)).json(data);
 };
 
+const getbyId = async (req, res) => {
+  const { id } = req.params;
+  const { data, status, message } = await productsServices.getbyId(id);
+  return res.status(mapStatusHTTP(status)).json(data || message);
+};
+
 module.exports = {
   getAll,
+  getbyId,
 };
