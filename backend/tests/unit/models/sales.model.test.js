@@ -19,7 +19,7 @@ describe('Testes da sales Model', function () {
 
   it('Seleciona todos os dados do banco de dados por id', async function () {
     sinon.stub(connection, 'execute').resolves(mockSaleModel);
-    const salesById = await salesModel.getbyId(1);
+    const salesById = await salesModel.getById(1);
     const firstSale = salesById[0];
     expect(firstSale).to.be.an('object');
     expect(firstSale.date).to.be.an('string');
@@ -29,7 +29,7 @@ describe('Testes da sales Model', function () {
 
   it('Busca no banco de dados por id fora do bando de dados', async function () {
     sinon.stub(connection, 'execute').resolves([]);
-    const salesById = await salesModel.getbyId(1);
+    const salesById = await salesModel.getById(1);
     expect(salesById).to.be.an('undefined');
   });
 

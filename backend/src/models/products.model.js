@@ -15,7 +15,7 @@ const getAll = async () => {
   return products;
 };
 
-const getbyId = async (reqId) => {
+const getById = async (reqId) => {
   const [[product]] = await connection.execute('SELECT * FROM products WHERE id = ?', [reqId]);
   return product;
 };
@@ -29,6 +29,6 @@ const insert = async (reqName) => {
 
 module.exports = {
   getAll,
-  getbyId,
+  getById,
   insert,
 };

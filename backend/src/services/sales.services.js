@@ -5,8 +5,8 @@ const getAll = async () => {
   return { status: 'SUCCESSFULL', data }; 
 };
 
-const getbyId = async (reqId) => {
-  const data = await salesModel.getbyId(reqId);
+const getById = async (reqId) => {
+  const data = await salesModel.getById(reqId);
   if (data.length === 0) return { status: 'NOT_FOUND', data: { message: 'Sale not found' } }; 
 
   return { status: 'SUCCESSFULL', data }; 
@@ -14,5 +14,5 @@ const getbyId = async (reqId) => {
 
 module.exports = {
   getAll,
-  getbyId,
+  getById,
 };

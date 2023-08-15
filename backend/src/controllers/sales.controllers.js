@@ -6,13 +6,13 @@ const getAll = async (_req, res) => {
   return res.status(mapStatusHTTP(status)).json(data);
 };
 
-const getbyId = async (req, res) => {
+const getById = async (req, res) => {
   const { id } = req.params;
-  const { data, status, message } = await salesServices.getbyId(id);
-  return res.status(mapStatusHTTP(status)).json(data || message);
+  const { data, status } = await salesServices.getById(id);
+  return res.status(mapStatusHTTP(status)).json(data);
 };
 
 module.exports = {
   getAll,
-  getbyId,
+  getById,
 };

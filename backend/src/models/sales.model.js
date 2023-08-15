@@ -13,7 +13,7 @@ const getAll = async () => {
   return camelize(sales);
 };
 
-const getbyId = async (reqId) => {
+const getById = async (reqId) => {
   const [salesById] = await connection.execute(
   `SELECT S.date,
   SP.product_id,
@@ -27,5 +27,5 @@ const getbyId = async (reqId) => {
 
 module.exports = {
   getAll,
-  getbyId,
+  getById,
 };
