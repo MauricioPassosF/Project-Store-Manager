@@ -2,7 +2,7 @@ const { expect } = require('chai');
 const sinon = require('sinon');
 const connection = require('../../../src/models/connection');
 const { productsModel } = require('../../../src/models');
-const { mockAllProductsModel, mockProductModel } = require('../mocks/productsMocks');
+const { mockAllProductsModel, mockProductModel, mockNewProductModel } = require('../mocks/productsMocks');
 
 describe('Testes da products Model', function () {
   it('Seleciona todos os dados do banco de dados', async function () {
@@ -28,6 +28,16 @@ describe('Testes da products Model', function () {
     const product = await productsModel.getById(1);
     console.log(product);
     expect(product).to.be.an('undefined');
+  });
+
+  it('Adicionar novo produto no banco de dados, com nome valido', async function () {
+    sinon.stub(connection, 'execute').resolves(mockNewProductModel);
+    const newProduct = await productsModel.insert('NovoP');
+    expect(newProduct).to.be.an('object');
+    expect(newProduct.id).to.be.an('number');
+    expect(newProduct.id).to.deep.equal(1);
+    expect(newProduct.name).to.be.an('string');
+    expect(newProduct.name).to.deep.equal('NovoP');
   });
 
   afterEach(function () {

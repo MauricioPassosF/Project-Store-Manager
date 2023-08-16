@@ -28,6 +28,13 @@ const mockProductService = [
 
 const mockProductModel = [[{ id: 1, name: 'Raquete de ping-pong' }]];
 
+const mockNewProductControllerSuc = { status: 'CREATED',
+data: { id: 1, name: 'NovoP' } };
+
+const mockNewProductService = { id: 1, name: 'NovoP' };
+
+const mockNewProductModel = [{ insertId: 1 }];
+
 module.exports = {
   mockAllProductsController,
   mockAllProductsService,
@@ -35,4 +42,7 @@ module.exports = {
   mockProductModel,
   mockProductService,
   mockProductControllerSuc,
+  mockNewProductControllerSuc,
+  mockNewProductService,
+  mockNewProductModel,
 };

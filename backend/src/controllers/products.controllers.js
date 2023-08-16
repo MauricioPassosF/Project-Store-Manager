@@ -8,8 +8,8 @@ const getAll = async (_req, res) => {
 
 const getById = async (req, res) => {
   const { id } = req.params;
-  const { data, status, message } = await productsServices.getById(id);
-  return res.status(mapStatusHTTP(status)).json(data || message);
+  const { data, status } = await productsServices.getById(id);
+  return res.status(mapStatusHTTP(status)).json(data);
 };
 
 const insert = async (req, res) => {
