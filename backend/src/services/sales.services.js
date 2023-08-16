@@ -1,4 +1,6 @@
-const { salesModel } = require('../models');
+const { salesModel, 
+  // productsModel 
+} = require('../models');
 
 const getAll = async () => {
   const data = await salesModel.getAll();
@@ -12,7 +14,31 @@ const getById = async (reqId) => {
   return { status: 'SUCCESSFULL', data }; 
 };
 
+const insert = async (salesInfo) => {
+  if (salesInfo.some(({ quantity }) => quantity <= 0)) {
+    return {
+      status: 'UNPROCESSABLE',
+      data: { message: '"quantity" must be greater than or equal to 1' },
+    };
+  }
+  // const productsIds = await Promise.all(salesInfo
+  //   .map(({ productId }) => productsModel.getById(productId)));
+  // if (productsIds.some((productId) => !productId)) {
+  //   return {
+  //     status: 'NOT_FOUND',
+  //     data: { message: '"quantity" must be greater than or equal to 1' },
+  //   };
+  // }
+  // console.log(productsIds);  
+  const id = await salesModel.insertSales();
+  await Promise.all(salesInfo
+    .map((productSale) => salesModel.insertProductSale(productSale, id))); 
+  const data = { id, itemsSold: salesInfo };
+  return { status: 'CREATED', data };
+};
+
 module.exports = {
   getAll,
   getById,
+  insert,
 };

@@ -15,7 +15,7 @@ const getAll = async () => {
 
 const getById = async (reqId) => {
   const [salesById] = await connection.execute(
-  `SELECT S.date,
+    `SELECT S.date,
   SP.product_id,
   SP.quantity 
   FROM sales_products AS SP INNER JOIN sales AS S ON SP.sale_id = S.id
@@ -25,7 +25,23 @@ const getById = async (reqId) => {
   return camelize(salesById);
 };
 
+const insertSales = async () => {
+  const [{ insertId }] = await connection.execute('INSERT INTO sales () value ();');
+  return insertId;
+};
+
+const insertProductSale = async ({ productId, quantity }, id) => {
+  await connection.execute(
+    `INSERT INTO sales_products 
+  (sale_id, product_id, quantity) 
+  value (?,?,?);`,
+    [id, productId, quantity],
+  );
+};
+
 module.exports = {
   getAll,
   getById,
+  insertSales,
+  insertProductSale,
 };

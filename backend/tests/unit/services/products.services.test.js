@@ -26,7 +26,7 @@ describe('Testes da products Service', function () {
   });
 
   it('Seleciona do banco de dados, filtrados por id invalido', async function () {
-    sinon.stub(productsModel, 'getById').resolves([]);
+    sinon.stub(productsModel, 'getById').resolves(undefined);
     const responseService = await productsServices.getById(40);
     const { status, data } = responseService;
     expect(responseService).to.be.an('object');
