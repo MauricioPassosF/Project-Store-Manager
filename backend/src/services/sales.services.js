@@ -1,12 +1,7 @@
-const { salesModel, productsModel, 
-  // productsModel 
-} = require('../models');
+const { salesModel, productsModel } = require('../models');
 
 const validations = async (salesInfo) => {
-  if (salesInfo.some(({ quantity }) => {
-    console.log(quantity);
-    return quantity <= 0; 
-})) {
+  if (salesInfo.some(({ quantity }) => quantity <= 0)) {
     return {
       status: 'UNPROCESSABLE',
       data: { message: '"quantity" must be greater than or equal to 1' },
@@ -50,3 +45,5 @@ module.exports = {
   getById,
   insert,
 };
+
+//

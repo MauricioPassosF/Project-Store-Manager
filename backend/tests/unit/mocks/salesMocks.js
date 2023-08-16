@@ -35,6 +35,13 @@ const mockSaleModel = [
   [{ date: '2021-09-09T04:54:29.000Z', productId: 1, quantity: 2 }],
 ];
 
+const mockNewSaleControllerSuc = { status: 'CREATED',
+data: [{ quantity: 10, productId: 1 }, { quantity: 15, productId: 2 }] };
+
+const mockNewSaleService = [{ quantity: 10, productId: 1 }, { quantity: 15, productId: 2 }];
+
+const mockNewSaleModelInsert = [{ insertId: 3 }];
+
 module.exports = {
   mockAllSalesController,
   mockAllSalesService,
@@ -42,4 +49,8 @@ module.exports = {
   mockSaleModel,
   mockSaleService,
   mockSaleControllerSuc,
+  mockNewSaleControllerSuc,
+  mockNewSaleService,
+  mockNewSaleModelInsert,
+  
 };

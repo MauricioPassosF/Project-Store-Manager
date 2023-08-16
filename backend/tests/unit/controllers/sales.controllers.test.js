@@ -4,7 +4,7 @@ const sinonChai = require('sinon-chai');
 
 const { salesControllers } = require('../../../src/controllers');
 const { salesServices } = require('../../../src/services');
-const { mockAllSalesController, mockAllSalesService, mockSaleControllerSuc, mockSaleService } = require('../mocks/salesMocks');
+const { mockAllSalesController, mockAllSalesService, mockSaleControllerSuc, mockSaleService, mockNewSaleControllerSuc, mockNewSaleService } = require('../mocks/salesMocks');
 
 const { expect } = chai;
 chai.use(sinonChai);
@@ -40,11 +40,21 @@ describe('Testes da sales Controllers', function () {
     expect(res.json).to.have.been.calledWith(mockSaleService);
   });
 
-  // it('Busca no banco de dados por id fora do bando de dados', async function () {
-  //   sinon.stub(connection, 'execute').resolves([]);
-  //   const salesById = await salesModel.getbyId(1);
-  //   expect(salesById).to.be.an('undefined');
-  // });
+  it('metodo POST - rota /sales/ - dados validos', async function () {
+    sinon.stub(salesServices, 'insert').resolves(mockNewSaleControllerSuc);
+    const res = {
+      status: sinon.stub().returnsThis(),
+      json: sinon.stub(),
+    };
+
+    const req = {
+      body: [{ quantity: 10, productId: 2 }, { quantity: 15, productId: 2 }],
+    };
+
+    await salesControllers.insert(req, res);
+    expect(res.status).to.have.been.calledWith(201);
+    expect(res.json).to.have.been.calledWith(mockNewSaleService);
+  });
 
   afterEach(function () {
     sinon.restore();

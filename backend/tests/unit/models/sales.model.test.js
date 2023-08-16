@@ -1,8 +1,10 @@
-const { expect } = require('chai');
+const chai = require('chai');
 const sinon = require('sinon');
 const connection = require('../../../src/models/connection');
 const { salesModel } = require('../../../src/models');
-const { mockAllSalesModel, mockSaleModel } = require('../mocks/salesMocks');
+const { mockAllSalesModel, mockSaleModel, mockNewSaleModelInsert } = require('../mocks/salesMocks');
+
+const { expect } = chai;
 
 describe('Testes da sales Model', function () {
   it('Seleciona todos os dados do banco de dados', async function () {
@@ -31,6 +33,21 @@ describe('Testes da sales Model', function () {
     sinon.stub(connection, 'execute').resolves([]);
     const salesById = await salesModel.getById(1);
     expect(salesById).to.be.an('undefined');
+  });
+
+  it('Inseri dados corretamente na tabela sales_products do banco de dados', async function () {
+    const test = sinon.stub(connection, 'execute').resolves([{ insertId: 3 }]);
+    const saleData = { productId: 2, quantity: 10 };
+    await salesModel.insertProductSale(saleData, 1);
+    console.log(test.calledTwice);
+    console.log(test.callCount);
+    expect(test.callCount).to.equal(1);
+  });
+
+  it('Inseri dados corretamente na tabela sales do banco de dados', async function () {
+    sinon.stub(connection, 'execute').resolves(mockNewSaleModelInsert);
+    const dbResponse = await salesModel.insertSales();
+    expect(dbResponse).to.be.deep.equal(3);
   });
 
   afterEach(function () {

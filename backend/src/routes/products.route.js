@@ -9,5 +9,6 @@ route.post(
  productsValidations.validateNameFromBody,
  productsControllers.insert,
  );
+route.put('/:id', productsControllers.update); 
 
 module.exports = route;
