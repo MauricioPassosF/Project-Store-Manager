@@ -1,11 +1,12 @@
 const route = require('express').Router();
 const { salesControllers } = require('../controllers');
+const { salesValidations } = require('../middlewares');
 
 route.get('/:id', salesControllers.getById);
 route.get('/', salesControllers.getAll);
 route.post(
 '/',
-//  productsValidations.validateNameFromBody,
+ salesValidations.validateSalesFromBody,
  salesControllers.insert,
  );
 

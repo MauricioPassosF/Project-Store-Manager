@@ -1,6 +1,26 @@
-const { salesModel, 
+const { salesModel, productsModel, 
   // productsModel 
 } = require('../models');
+
+const validations = async (salesInfo) => {
+  if (salesInfo.some(({ quantity }) => {
+    console.log(quantity);
+    return quantity <= 0; 
+})) {
+    return {
+      status: 'UNPROCESSABLE',
+      data: { message: '"quantity" must be greater than or equal to 1' },
+    };
+  }
+  const productsIds = await Promise.all(salesInfo
+    .map(async ({ productId }) => productsModel.getById(productId)));
+  if (productsIds.includes(undefined)) {
+    return {
+      status: 'NOT_FOUND',
+      data: { message: 'Product not found' },
+    };
+  }
+};
 
 const getAll = async () => {
   const data = await salesModel.getAll();
@@ -15,21 +35,9 @@ const getById = async (reqId) => {
 };
 
 const insert = async (salesInfo) => {
-  if (salesInfo.some(({ quantity }) => quantity <= 0)) {
-    return {
-      status: 'UNPROCESSABLE',
-      data: { message: '"quantity" must be greater than or equal to 1' },
-    };
-  }
-  // const productsIds = await Promise.all(salesInfo
-  //   .map(({ productId }) => productsModel.getById(productId)));
-  // if (productsIds.some((productId) => !productId)) {
-  //   return {
-  //     status: 'NOT_FOUND',
-  //     data: { message: '"quantity" must be greater than or equal to 1' },
-  //   };
-  // }
-  // console.log(productsIds);  
+  const valid = await validations(salesInfo);
+  if (valid) return valid; 
+
   const id = await salesModel.insertSales();
   await Promise.all(salesInfo
     .map((productSale) => salesModel.insertProductSale(productSale, id))); 
