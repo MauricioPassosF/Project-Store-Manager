@@ -4,15 +4,8 @@ const { productsValidations } = require('../middlewares');
 
 route.get('/:id', productsControllers.getById);
 route.get('/', productsControllers.getAll);
-route.post(
-'/',
- productsValidations.validateNameFromBody,
- productsControllers.insert,
- );
-route.put(
-'/:id',
-productsValidations.validateNameFromBody,
- productsControllers.update,
-); 
+route.post('/', productsValidations.validateNameFromBody, productsControllers.insert);
+route.put('/:id', productsValidations.validateNameFromBody, productsControllers.update);
+route.delete('/:id', productsControllers.deleteById);
 
 module.exports = route;

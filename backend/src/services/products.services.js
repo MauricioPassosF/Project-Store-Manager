@@ -51,9 +51,17 @@ const update = async (name, id) => {
   return { status: 'SUCCESSFULL', data };
 };
 
+const deleteById = async (id) => {
+  const idError = await validateId(id);
+  if (idError) return idError;
+  await productsModel.deleteById(Number(id));
+  return { status: 'NO_CONTENT', data: undefined };
+};
+
 module.exports = {
   getAll,
   getById,
   insert,
   update,
+  deleteById,
 };
