@@ -35,6 +35,9 @@ const mockNewProductService = { id: 1, name: 'NovoP' };
 
 const mockNewProductModel = [{ insertId: 1 }];
 
+const mockUpdateProductControllerSuc = { status: 'SUCCESSFULL',
+data: { id: 1, name: 'NovoP' } };
+
 module.exports = {
   mockAllProductsController,
   mockAllProductsService,
@@ -45,4 +48,5 @@ module.exports = {
   mockNewProductControllerSuc,
   mockNewProductService,
   mockNewProductModel,
+  mockUpdateProductControllerSuc,
 };

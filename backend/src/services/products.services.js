@@ -9,6 +9,15 @@ const validateLength = (name, length) => {
   }
 };
 
+const validateId = async (id) => {
+  if (!await productsModel.getById(id)) {
+    return {
+      status: 'NOT_FOUND',
+      data: { message: 'Product not found' },
+    };
+  }
+};
+
 const getAll = async () => {
   const data = await productsModel.getAll();
   return { status: 'SUCCESSFULL', data };
@@ -36,8 +45,9 @@ const insert = async (reqName) => {
 const update = async (name, id) => {
   const lenghtError = validateLength(name, 5);
   if (lenghtError) return lenghtError;
-  const data = await productsModel.update(name, id);
-  console.log(`Log Service: ${data}`);
+  const idError = await validateId(id);
+  if (idError) return idError;
+  const data = await productsModel.update(name, Number(id));
   return { status: 'SUCCESSFULL', data };
 };
 

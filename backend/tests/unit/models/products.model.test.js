@@ -40,6 +40,17 @@ describe('Testes da products Model', function () {
     expect(newProduct.name).to.deep.equal('NovoP');
   });
 
+  it('Atualiza produto no banco de dados, com dados', async function () {
+    const stubedFunction = sinon.stub(connection, 'execute').resolves([{ insertId: 3 }]);
+    const updatedProduct = await productsModel.update('NovoP', 3);
+    expect(updatedProduct).to.be.an('object');
+    expect(updatedProduct.id).to.be.an('number');
+    expect(updatedProduct.id).to.deep.equal(3);
+    expect(updatedProduct.name).to.be.an('string');
+    expect(updatedProduct.name).to.deep.equal('NovoP');
+    expect(stubedFunction.callCount).to.equal(1);
+  });
+
   afterEach(function () {
     sinon.restore();
   });

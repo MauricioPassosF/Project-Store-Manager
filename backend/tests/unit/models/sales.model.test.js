@@ -36,12 +36,10 @@ describe('Testes da sales Model', function () {
   });
 
   it('Inseri dados corretamente na tabela sales_products do banco de dados', async function () {
-    const test = sinon.stub(connection, 'execute').resolves([{ insertId: 3 }]);
+    const stubedFunction = sinon.stub(connection, 'execute').resolves([{ insertId: 3 }]);
     const saleData = { productId: 2, quantity: 10 };
     await salesModel.insertProductSale(saleData, 1);
-    console.log(test.calledTwice);
-    console.log(test.callCount);
-    expect(test.callCount).to.equal(1);
+    expect(stubedFunction.callCount).to.equal(1);
   });
 
   it('Inseri dados corretamente na tabela sales do banco de dados', async function () {

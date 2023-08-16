@@ -57,6 +57,40 @@ describe('Testes da products Service', function () {
     expect(data.message).to.equal('"name" length must be at least 5 characters long');
   });
 
+  it('Tenta alterar produto no banco de dados, com dados validos', async function () {
+    sinon.stub(productsModel, 'update').resolves(mockNewProductService);
+    sinon.stub(productsModel, 'getById').resolves([mockProductService]);
+    const responseService = await productsServices.update('NovoP', 1);
+    const { status, data } = responseService;
+    expect(responseService).to.be.an('object');
+    expect(status).to.be.an('string');
+    expect(status).to.equal('SUCCESSFULL');
+    expect(data).to.be.an('object');
+    expect(data.name).to.deep.equal('NovoP');
+    expect(data.id).to.deep.equal(1);
+  });
+
+  it('Tenta alterar produto no banco de dados, com nome invalido', async function () {
+    const responseService = await productsServices.update('Novo', 1);
+    const { status, data } = responseService;
+    expect(responseService).to.be.an('object');
+    expect(status).to.be.an('string');
+    expect(status).to.equal('UNPROCESSABLE');
+    expect(data).to.be.an('object');
+    expect(data.message).to.equal('"name" length must be at least 5 characters long');
+  });
+
+  it('Tenta alterar produto no banco de dados, com id invalido', async function () {
+    sinon.stub(productsModel, 'getById').resolves(undefined);
+    const responseService = await productsServices.update('NovoP', 1);
+    const { status, data } = responseService;
+    expect(responseService).to.be.an('object');
+    expect(status).to.be.an('string');
+    expect(status).to.deep.equal('NOT_FOUND');
+    expect(data).to.be.an('object');
+    expect(data.message).to.deep.equal('Product not found');
+  });
+
   afterEach(function () {
     sinon.restore();
   });
