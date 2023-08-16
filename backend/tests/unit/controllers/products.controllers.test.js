@@ -4,7 +4,7 @@ const sinonChai = require('sinon-chai');
 
 const { productsControllers } = require('../../../src/controllers');
 const { productsServices } = require('../../../src/services');
-const { mockAllProductsController, mockAllProductsService, mockProductControllerSuc, mockProductService, mockNewProductControllerSuc, mockNewProductService, mockUpdateProductControllerSuc } = require('../mocks/productsMocks');
+const { mockAllProductsController, mockAllProductsService, mockProductControllerSuc, mockProductService, mockNewProductControllerSuc, mockNewProductService, mockUpdateProductControllerSuc, mockDeleteProductControllerSuc } = require('../mocks/productsMocks');
 
 const { expect } = chai;
 chai.use(sinonChai);
@@ -56,7 +56,7 @@ describe('Testes da products Controllers', function () {
     expect(res.json).to.have.been.calledWith(mockNewProductService);
   });
 
-  it('metodo PUT - rota /products/:id - nome valido', async function () {
+  it('metodo PUT - rota /products/:id - dados validos', async function () {
     sinon.stub(productsServices, 'update').resolves(mockUpdateProductControllerSuc);
     const res = {
       status: sinon.stub().returnsThis(),
@@ -71,6 +71,22 @@ describe('Testes da products Controllers', function () {
     await productsControllers.update(req, res);
     expect(res.status).to.have.been.calledWith(200);
     expect(res.json).to.have.been.calledWith(mockNewProductService);
+  });
+
+  it('metodo DELETE - rota /products/:id - id valido', async function () {
+    sinon.stub(productsServices, 'deleteById').resolves(mockDeleteProductControllerSuc);
+    const res = {
+      status: sinon.stub().returnsThis(),
+      json: sinon.stub(),
+    };
+
+    const req = {
+      params: { id: 1 },
+    };
+
+    await productsControllers.deleteById(req, res);
+    expect(res.status).to.have.been.calledWith(204);
+    expect(res.json).to.have.been.calledWith(undefined);
   });
 
   afterEach(function () {

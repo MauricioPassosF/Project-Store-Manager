@@ -91,6 +91,29 @@ describe('Testes da products Service', function () {
     expect(data.message).to.deep.equal('Product not found');
   });
 
+  it('Tenta deletar produto do banco de dados, com id valido', async function () {
+    sinon.stub(productsModel, 'getById').resolves([mockProductService]);
+    const spyedFunction = sinon.spy(productsModel, 'deleteById');
+    const responseService = await productsServices.deleteById(1);
+    const { status, data } = responseService;
+    expect(responseService).to.be.an('object');
+    expect(status).to.be.an('string');
+    expect(status).to.equal('NO_CONTENT');
+    expect(data).to.be.an('undefined');
+    expect(spyedFunction.callCount).to.equal(1);
+  });
+
+  it('Tenta deletar produto do banco de dados, com id invalido', async function () {
+    sinon.stub(productsModel, 'getById').resolves(undefined);
+    const responseService = await productsServices.deleteById(1);
+    const { status, data } = responseService;
+    expect(responseService).to.be.an('object');
+    expect(status).to.be.an('string');
+    expect(status).to.deep.equal('NOT_FOUND');
+    expect(data).to.be.an('object');
+    expect(data.message).to.deep.equal('Product not found');
+  });
+
   afterEach(function () {
     sinon.restore();
   });

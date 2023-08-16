@@ -38,6 +38,9 @@ const mockNewProductModel = [{ insertId: 1 }];
 const mockUpdateProductControllerSuc = { status: 'SUCCESSFULL',
 data: { id: 1, name: 'NovoP' } };
 
+const mockDeleteProductControllerSuc = { status: 'NO_CONTENT',
+data: undefined };
+
 module.exports = {
   mockAllProductsController,
   mockAllProductsService,
@@ -49,4 +52,5 @@ module.exports = {
   mockNewProductService,
   mockNewProductModel,
   mockUpdateProductControllerSuc,
+  mockDeleteProductControllerSuc,
 };
