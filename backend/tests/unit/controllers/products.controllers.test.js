@@ -89,6 +89,22 @@ describe('Testes da products Controllers', function () {
     expect(res.json).to.have.been.calledWith(undefined);
   });
 
+  it('metodo GET - rota /products/search', async function () {
+    sinon.stub(productsServices, 'getByName').resolves(mockAllProductsController);
+    const res = {
+      status: sinon.stub().returnsThis(),
+      json: sinon.stub(),
+    };
+
+    const req = {
+      query: { q: 'tenis' },
+    };
+
+    await productsControllers.getByName(req, res);
+    expect(res.status).to.have.been.calledWith(200);
+    expect(res.json).to.have.been.calledWith(mockAllProductsService);
+  });
+
   afterEach(function () {
     sinon.restore();
   });

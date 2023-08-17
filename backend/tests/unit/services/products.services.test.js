@@ -114,6 +114,16 @@ describe('Testes da products Service', function () {
     expect(data.message).to.deep.equal('Product not found');
   });
 
+  it('Seleciona do banco de dados, filtrados por nome', async function () {
+    sinon.stub(productsModel, 'getByName').resolves(mockAllProductsService);
+    const responseService = await productsServices.getByName('tenis');
+    const { status, data } = responseService;
+    expect(responseService).to.be.an('object');
+    expect(status).to.be.an('string');
+    expect(status).to.equal('SUCCESSFULL');
+    expect(data).to.be.an('array');
+  });
+
   afterEach(function () {
     sinon.restore();
   });

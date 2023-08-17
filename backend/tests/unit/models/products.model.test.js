@@ -23,6 +23,15 @@ describe('Testes da products Model', function () {
     expect(product.name).to.be.an('string');
   });
 
+  it('Seleciona todos os dados do banco de dados por nome', async function () {
+    sinon.stub(connection, 'execute').resolves(mockAllProductsModel);
+    const [product] = await productsModel.getByName('tenis');
+    expect(product).to.be.an('object');
+    expect(product.id).to.be.an('number');
+    expect(product.id).to.equal(1);
+    expect(product.name).to.be.an('string');
+  });
+
   it('Busca no banco de dados por id fora do bando de dados', async function () {
     sinon.stub(connection, 'execute').resolves([[]]);
     const product = await productsModel.getById(1);

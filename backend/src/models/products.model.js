@@ -13,7 +13,6 @@ const getById = async (reqId) => {
 };
 
 const getByName = async (reqName) => {
-  // const search = `'%${reqName}%'`;
   const query = `SELECT * FROM products WHERE name LIKE '%${reqName}%'`;
   const [product] = await connection
   .execute(query);
