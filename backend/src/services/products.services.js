@@ -57,10 +57,16 @@ const deleteById = async (id) => {
   return { status: 'NO_CONTENT', data: undefined };
 };
 
+const getByName = async (reqName) => {
+  const data = await productsModel.getByName(reqName);
+  return { status: 'SUCCESSFULL', data };
+};
+
 module.exports = {
   getAll,
   getById,
   insert,
   update,
   deleteById,
+  getByName,
 };

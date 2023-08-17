@@ -12,6 +12,14 @@ const getById = async (reqId) => {
   return product;
 };
 
+const getByName = async (reqName) => {
+  // const search = `'%${reqName}%'`;
+  const query = `SELECT * FROM products WHERE name LIKE '%${reqName}%'`;
+  const [product] = await connection
+  .execute(query);
+  return product;
+};
+
 const insert = async (reqName) => {
   const [{ insertId }] = await connection
   .execute('INSERT INTO products (name) value (?);', [reqName]);
@@ -35,4 +43,5 @@ module.exports = {
   insert,
   update,
   deleteById,
+  getByName,
 };

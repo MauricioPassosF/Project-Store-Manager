@@ -31,10 +31,16 @@ const deleteById = async (req, res) => {
   return res.status(mapStatusHTTP(status)).json(data);
 };
 
+const getByName = async ({ query }, res) => {
+  const { status, data } = await productsServices.getByName(query.q);
+  return res.status(mapStatusHTTP(status)).json(data);
+};
+
 module.exports = {
   getAll,
   getById,
   insert,
   update,
   deleteById,
+  getByName,
 };
