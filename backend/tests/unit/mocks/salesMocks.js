@@ -45,6 +45,26 @@ const mockNewSaleModelInsert = [{ insertId: 3 }];
 const mockDeleteSalesControllerSuc = { status: 'NO_CONTENT',
 data: undefined };
 
+const mockUpdateSalesQuantityService = { quantity: 30,
+  saleId: 1,
+  productId: 2,
+  date: '2023-08-17T20:54:35.000Z' };
+
+const mockUpdateSalesQuantityInfo = { quantity: 30,
+  saleId: '1',
+  productId: '2',
+  };
+
+const mockUpdateSalesQuantityDate = '2023-08-17T20:54:35.000Z';
+
+const mockUpdateSalesQuantityControllerSuc = { status: 'SUCCESSFULL',
+data:
+  { quantity: 30,
+  saleId: 1,
+  productId: 2,
+  date: '2023-08-17T20:54:35.000Z' },
+};
+
 module.exports = {
   mockAllSalesController,
   mockAllSalesService,
@@ -56,4 +76,8 @@ module.exports = {
   mockNewSaleService,
   mockNewSaleModelInsert,
   mockDeleteSalesControllerSuc,
+  mockUpdateSalesQuantityControllerSuc,
+  mockUpdateSalesQuantityService,
+  mockUpdateSalesQuantityInfo,
+  mockUpdateSalesQuantityDate,
 };

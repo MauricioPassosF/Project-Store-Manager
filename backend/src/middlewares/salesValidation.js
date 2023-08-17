@@ -27,14 +27,15 @@ const validateSalesFromBody = (req, res, next) => {
   next();
 };
 
-// const validateQuantityFromBody = (req, res, next) => {
-//   const message = validateQuantity(req.body);
-//   if (message) {
-//  return res.status(400).json({ message });
-// }
-//   next();
-// };
+const validateQuantityFromBody = (req, res, next) => {
+  const message = validateQuantity(req.body.quantity);
+  if (message) {
+ return res.status(400).json({ message });
+}
+  next();
+};
 
 module.exports = {
   validateSalesFromBody,
+  validateQuantityFromBody,
 };

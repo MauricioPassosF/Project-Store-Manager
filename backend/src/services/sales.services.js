@@ -1,12 +1,20 @@
 const { salesModel, productsModel } = require('../models');
 
+const validateQuantity = (quantity) => (quantity <= 0 ? {
+    status: 'UNPROCESSABLE',
+    data: { message: '"quantity" must be greater than or equal to 1' },
+  } : false);
+
+// const validateProduct = (productId,saleId) => (productsModel.getById(productId) ? {
+//   status: 'NOT_FOUND',
+//   data: { message: 'Product not found in sale' },
+// } : false);  
+
 const validations = async (salesInfo) => {
-  if (salesInfo.some(({ quantity }) => quantity <= 0)) {
-    return {
-      status: 'UNPROCESSABLE',
-      data: { message: '"quantity" must be greater than or equal to 1' },
-    };
-  }
+  const quantityError = salesInfo
+  .map(({ quantity }) => validateQuantity(quantity))
+  .find((error) => error);
+  if (quantityError) { return quantityError; }
   const productsIds = await Promise.all(salesInfo
     .map(async ({ productId }) => productsModel.getById(productId)));
   if (productsIds.includes(undefined)) {
@@ -57,9 +65,28 @@ const deleteById = async (id) => {
   return { status: 'NO_CONTENT', data: undefined };
 };
 
+const updateQuantity = async (infos) => {
+  const { saleId, quantity, productId } = infos;
+  const quantityError = validateQuantity(quantity);
+  if (quantityError) { return quantityError; }
+  const idError = await validateId(saleId);
+  if (idError) return idError;
+  const modelResponse = await salesModel.updateQuantity(infos);
+  if (modelResponse === 0) {
+    return { 
+      status: 'NOT_FOUND',
+      data: { message: 'Product not found in sale' } }; 
+  } 
+  const date = await salesModel.getSaleDate(saleId);
+  return { status: 'SUCCESSFULL',
+data: { 
+    quantity, saleId: Number(saleId), productId: Number(productId), date } };
+};
+
 module.exports = {
   getAll,
   getById,
   insert,
   deleteById,
+  updateQuantity,
 };

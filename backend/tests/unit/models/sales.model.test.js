@@ -2,7 +2,7 @@ const chai = require('chai');
 const sinon = require('sinon');
 const connection = require('../../../src/models/connection');
 const { salesModel } = require('../../../src/models');
-const { mockAllSalesModel, mockSaleModel, mockNewSaleModelInsert } = require('../mocks/salesMocks');
+const { mockAllSalesModel, mockSaleModel, mockNewSaleModelInsert, mockUpdateSalesQuantityInfo } = require('../mocks/salesMocks');
 
 const { expect } = chai;
 
@@ -52,6 +52,19 @@ describe('Testes da sales Model', function () {
     const stubedFunction = sinon.stub(connection, 'execute').resolves([{ affectedRows: 1 }]);
     await salesModel.deleteById(2);
     expect(stubedFunction.callCount).to.equal(1);
+  });
+
+  it('Atualiza dados de quantidade de uma venda no banco de dados, com dados validos', async function () {
+    sinon.stub(connection, 'execute').resolves([{ affectedRows: 1 }]);
+    const modelResponse = await salesModel.updateQuantity(mockUpdateSalesQuantityInfo);
+    expect(modelResponse).to.deep.equal(1);
+  });
+
+  it('Seleciona a data do banco de dados por saleId', async function () {
+    sinon.stub(connection, 'execute').resolves([[{ date: '2023-08-17T20:54:35.000Z' }]]);
+    const modelResponse = await salesModel.getSaleDate(1);
+    expect(modelResponse).to.be.an('string');
+    expect(modelResponse).to.deep.equal('2023-08-17T20:54:35.000Z');
   });
 
   afterEach(function () {

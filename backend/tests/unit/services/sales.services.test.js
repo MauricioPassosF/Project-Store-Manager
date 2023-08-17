@@ -2,7 +2,7 @@ const { expect } = require('chai');
 const sinon = require('sinon');
 const { salesModel, productsModel } = require('../../../src/models');
 const { salesServices } = require('../../../src/services');
-const { mockAllSalesService, mockSaleService, mockNewSaleService } = require('../mocks/salesMocks');
+const { mockAllSalesService, mockSaleService, mockNewSaleService, mockUpdateSalesQuantityInfo, mockUpdateSalesQuantityDate, mockUpdateSalesQuantityService } = require('../mocks/salesMocks');
 const { mockProductService } = require('../mocks/productsMocks');
 
 describe('Testes da sales Service', function () {
@@ -106,6 +106,57 @@ describe('Testes da sales Service', function () {
     expect(status).to.deep.equal('NOT_FOUND');
     expect(data).to.be.an('object');
     expect(data.message).to.deep.equal('Sale not found');
+  });
+
+  it('Tenta atualizar quantidade de produto no banco de dados, com dados validos', async function () {
+    sinon.stub(salesModel, 'getById').resolves(mockSaleService);
+    sinon.stub(salesModel, 'updateQuantity').resolves(1);
+    sinon.stub(salesModel, 'getSaleDate').resolves(mockUpdateSalesQuantityDate);
+    const responseService = await salesServices.updateQuantity(mockUpdateSalesQuantityInfo);
+    const { status, data } = responseService;
+    expect(responseService).to.be.an('object');
+    expect(status).to.be.an('string');
+    expect(status).to.deep.equal('SUCCESSFULL');
+    expect(data).to.be.an('object');
+    expect(data).to.deep.equal(mockUpdateSalesQuantityService);
+  });
+
+  it('Tenta atualizar quantidade de produto no banco de dados, com quantidade invalida', async function () {
+    const responseService = await salesServices.updateQuantity(
+      { quantity: 0,
+      saleId: '1',
+      productId: '2',
+      },
+    );
+    const { status, data } = responseService;
+    expect(responseService).to.be.an('object');
+    expect(status).to.be.an('string');
+    expect(status).to.deep.equal('UNPROCESSABLE');
+    expect(data).to.be.an('object');
+    expect(data.message).to.deep.equal('"quantity" must be greater than or equal to 1');
+  });
+
+  it('Tenta atualizar quantidade de produto no banco de dados, com saleId invalida', async function () {
+    sinon.stub(salesModel, 'getById').resolves([]);
+    const responseService = await salesServices.updateQuantity(mockUpdateSalesQuantityInfo);
+    const { status, data } = responseService;
+    expect(responseService).to.be.an('object');
+    expect(status).to.be.an('string');
+    expect(status).to.deep.equal('NOT_FOUND');
+    expect(data).to.be.an('object');
+    expect(data.message).to.deep.equal('Sale not found');
+  });
+
+  it('Tenta atualizar quantidade de produto no banco de dados, com productId invalida', async function () {
+    sinon.stub(salesModel, 'getById').resolves(mockSaleService);
+    sinon.stub(salesModel, 'updateQuantity').resolves(0);
+    const responseService = await salesServices.updateQuantity(mockUpdateSalesQuantityInfo);
+    const { status, data } = responseService;
+    expect(responseService).to.be.an('object');
+    expect(status).to.be.an('string');
+    expect(status).to.deep.equal('NOT_FOUND');
+    expect(data).to.be.an('object');
+    expect(data.message).to.deep.equal('Product not found in sale');
   });
 
   afterEach(function () {
