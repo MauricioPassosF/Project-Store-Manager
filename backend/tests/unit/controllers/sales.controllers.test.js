@@ -4,7 +4,7 @@ const sinonChai = require('sinon-chai');
 
 const { salesControllers } = require('../../../src/controllers');
 const { salesServices } = require('../../../src/services');
-const { mockAllSalesController, mockAllSalesService, mockSaleControllerSuc, mockSaleService, mockNewSaleControllerSuc, mockNewSaleService } = require('../mocks/salesMocks');
+const { mockAllSalesController, mockAllSalesService, mockSaleControllerSuc, mockSaleService, mockNewSaleControllerSuc, mockNewSaleService, mockDeleteSalesControllerSuc } = require('../mocks/salesMocks');
 
 const { expect } = chai;
 chai.use(sinonChai);
@@ -54,6 +54,22 @@ describe('Testes da sales Controllers', function () {
     await salesControllers.insert(req, res);
     expect(res.status).to.have.been.calledWith(201);
     expect(res.json).to.have.been.calledWith(mockNewSaleService);
+  });
+
+  it('metodo DELETE - rota /sales/:id - id valido', async function () {
+    sinon.stub(salesServices, 'deleteById').resolves(mockDeleteSalesControllerSuc);
+    const res = {
+      status: sinon.stub().returnsThis(),
+      json: sinon.stub(),
+    };
+
+    const req = {
+      params: { id: 1 },
+    };
+
+    await salesControllers.deleteById(req, res);
+    expect(res.status).to.have.been.calledWith(204);
+    expect(res.json).to.have.been.calledWith(undefined);
   });
 
   afterEach(function () {

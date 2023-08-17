@@ -26,7 +26,6 @@ describe('Testes da products Model', function () {
   it('Busca no banco de dados por id fora do bando de dados', async function () {
     sinon.stub(connection, 'execute').resolves([[]]);
     const product = await productsModel.getById(1);
-    console.log(product);
     expect(product).to.be.an('undefined');
   });
 

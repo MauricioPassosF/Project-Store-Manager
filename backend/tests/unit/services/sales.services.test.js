@@ -37,7 +37,7 @@ describe('Testes da sales Service', function () {
     expect(data.message).to.equal('Sale not found');
   });
 
-  it('Tenta adicionar novo produto no banco de dados, com dados validos', async function () {
+  it('Tenta adicionar nova venda no banco de dados, com dados validos', async function () {
     sinon.stub(salesModel, 'insertSales').resolves(3);
     sinon.stub(salesModel, 'insertProductSale').resolves(undefined);
     sinon.stub(productsModel, 'getById').resolves([mockProductService]);
@@ -54,7 +54,7 @@ describe('Testes da sales Service', function () {
     expect(data.itemsSold).to.deep.equal(mockNewSaleService);
   });
 
-  it('Tenta adicionar novo produto no banco de dados, com quantity invalido', async function () {
+  it('Tenta adicionar nova venda no banco de dados, com quantity invalido', async function () {
     const responseService = await salesServices.insert([
       { quantity: 10, productId: 1 },
       { quantity: 0, productId: 2 },
@@ -67,7 +67,7 @@ describe('Testes da sales Service', function () {
     expect(data.message).to.deep.equal('"quantity" must be greater than or equal to 1');
   });
 
-  it('Tenta adicionar novo produto no banco de dados, com id invalido', async function () {
+  it('Tenta adicionar novo venda no banco de dados, com id invalido', async function () {
     sinon.stub(productsModel, 'getById')
     .onFirstCall()
     .resolves(undefined)
@@ -83,6 +83,29 @@ describe('Testes da sales Service', function () {
     expect(status).to.deep.equal('NOT_FOUND');
     expect(data).to.be.an('object');
     expect(data.message).to.deep.equal('Product not found');
+  });
+
+  it('Tenta deletar venda do banco de dados, com id valido', async function () {
+    sinon.stub(salesModel, 'getById').resolves(mockSaleService);
+    const stubedFunction = sinon.stub(salesModel, 'deleteById').resolves(undefined);
+    const responseService = await salesServices.deleteById(1);
+    const { status, data } = responseService;
+    expect(responseService).to.be.an('object');
+    expect(status).to.be.an('string');
+    expect(status).to.equal('NO_CONTENT');
+    expect(data).to.be.an('undefined');
+    expect(stubedFunction.callCount).to.equal(1);
+  });
+
+  it('Tenta deletar venda do banco de dados, com id invalido', async function () {
+    sinon.stub(salesModel, 'getById').resolves([]);
+    const responseService = await salesServices.deleteById(1);
+    const { status, data } = responseService;
+    expect(responseService).to.be.an('object');
+    expect(status).to.be.an('string');
+    expect(status).to.deep.equal('NOT_FOUND');
+    expect(data).to.be.an('object');
+    expect(data.message).to.deep.equal('Sale not found');
   });
 
   afterEach(function () {

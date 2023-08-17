@@ -48,6 +48,12 @@ describe('Testes da sales Model', function () {
     expect(dbResponse).to.be.deep.equal(3);
   });
 
+  it('Deleta venda do banco de dados, com id valido', async function () {
+    const stubedFunction = sinon.stub(connection, 'execute').resolves([{ affectedRows: 1 }]);
+    await salesModel.deleteById(2);
+    expect(stubedFunction.callCount).to.equal(1);
+  });
+
   afterEach(function () {
     sinon.restore();
   });

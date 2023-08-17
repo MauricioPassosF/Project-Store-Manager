@@ -29,6 +29,16 @@ const getById = async (reqId) => {
   return { status: 'SUCCESSFULL', data }; 
 };
 
+const validateId = async (id) => {
+  const rows = await salesModel.getById(id);
+  if (rows.length === 0) {
+    return {
+      status: 'NOT_FOUND',
+      data: { message: 'Sale not found' },
+    };
+  }
+};
+
 const insert = async (salesInfo) => {
   const valid = await validations(salesInfo);
   if (valid) return valid; 
@@ -40,10 +50,16 @@ const insert = async (salesInfo) => {
   return { status: 'CREATED', data };
 };
 
+const deleteById = async (id) => {
+  const idError = await validateId(id);
+  if (idError) return idError;
+  await salesModel.deleteById(Number(id));
+  return { status: 'NO_CONTENT', data: undefined };
+};
+
 module.exports = {
   getAll,
   getById,
   insert,
+  deleteById,
 };
-
-//

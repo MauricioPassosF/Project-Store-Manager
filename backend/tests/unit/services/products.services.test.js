@@ -93,14 +93,14 @@ describe('Testes da products Service', function () {
 
   it('Tenta deletar produto do banco de dados, com id valido', async function () {
     sinon.stub(productsModel, 'getById').resolves([mockProductService]);
-    const spyedFunction = sinon.spy(productsModel, 'deleteById');
+    const stubedFunction = sinon.stub(productsModel, 'deleteById').resolves(undefined);
     const responseService = await productsServices.deleteById(1);
     const { status, data } = responseService;
     expect(responseService).to.be.an('object');
     expect(status).to.be.an('string');
     expect(status).to.equal('NO_CONTENT');
     expect(data).to.be.an('undefined');
-    expect(spyedFunction.callCount).to.equal(1);
+    expect(stubedFunction.callCount).to.equal(1);
   });
 
   it('Tenta deletar produto do banco de dados, com id invalido', async function () {

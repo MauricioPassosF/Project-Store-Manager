@@ -42,6 +42,9 @@ const mockNewSaleService = [{ quantity: 10, productId: 1 }, { quantity: 15, prod
 
 const mockNewSaleModelInsert = [{ insertId: 3 }];
 
+const mockDeleteSalesControllerSuc = { status: 'NO_CONTENT',
+data: undefined };
+
 module.exports = {
   mockAllSalesController,
   mockAllSalesService,
@@ -52,5 +55,5 @@ module.exports = {
   mockNewSaleControllerSuc,
   mockNewSaleService,
   mockNewSaleModelInsert,
-  
+  mockDeleteSalesControllerSuc,
 };
