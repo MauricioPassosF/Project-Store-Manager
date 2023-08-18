@@ -5,7 +5,7 @@ const validateProductId = (productId) => {
 };
 
 const validateQuantity = (quantity) => { 
-  if (!quantity && quantity !== 0) { 
+  if (!quantity || quantity === 0) { 
     return '"quantity" is required';
   } 
 };

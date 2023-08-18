@@ -35,6 +35,17 @@ const mockSaleModel = [
   [{ date: '2021-09-09T04:54:29.000Z', productId: 1, quantity: 2 }],
 ];
 
+const mockNewSales = { status: 'CREATED',
+data: {
+  id: 1,
+  itemsSold: [{ quantity: 1, productId: 1 }, { quantity: 5, productId: 2 }],
+} };
+
+const mockSalesPostResponse = {
+  id: 1,
+  itemsSold: [{ quantity: 1, productId: 1 }, { quantity: 5, productId: 2 }],
+};
+
 const mockNewSaleControllerSuc = { status: 'CREATED',
 data: [{ quantity: 10, productId: 1 }, { quantity: 15, productId: 2 }] };
 
@@ -65,6 +76,11 @@ data:
   date: '2023-08-17T20:54:35.000Z' },
 };
 
+const mockUpdateSalesResponse = { quantity: 30,
+  saleId: 1,
+  productId: 2,
+  date: '2023-08-17T20:54:35.000Z' };
+
 module.exports = {
   mockAllSalesController,
   mockAllSalesService,
@@ -80,4 +96,7 @@ module.exports = {
   mockUpdateSalesQuantityService,
   mockUpdateSalesQuantityInfo,
   mockUpdateSalesQuantityDate,
+  mockNewSales,
+  mockSalesPostResponse,
+  mockUpdateSalesResponse,
 };
